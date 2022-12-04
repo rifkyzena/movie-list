@@ -1,0 +1,75 @@
+body {
+    background-color: black;
+}
+
+.navbar {
+    background-color: #201c1c !important;
+}
+
+footer {
+    background-color: #201c1c;
+}
+
+footer a {
+    color: white;
+}
+
+footer a:hover {
+    color: grey;
+}
+
+.round {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    background-color: #9b9b9c;
+    color: #FFF;
+    text-align: center;
+}
+
+.round.round-lg {
+    height: 35px;
+    width: 35px;
+    line-height: 40px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    font-size: 1.5em;
+}
+
+.card {
+    background-color: black !important;
+    color: white;
+}
+
+button {
+    background: #ff0000 !important;
+}
+
+button:hover {
+    background: #f52e2e !important;
+}
+
+.card-body a {
+    color: #ff0000 !important;
+}
+
+.card-body a:hover {
+    color: grey !important;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    background: #1f1f1f !important;
+    color: white !important;
+    border: 0 !important;
+}
+
+.form-check-input:checked:before {
+    background-color: green !important;
+}
+
+::placeholder {
+    text-align: center;
+}
