@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => 'Register'])
 
 @section('content')
 <div class="container">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <button type="submit" class="col-md-8 offset-md-2 btn btn-danger">
+                            <button id="auth" type="submit" class="col-md-8 offset-md-2 btn btn-danger">
                                 {{ __('Register') }} <i class="bi bi-arrow-right"></i>
                             </button>
                         </div>

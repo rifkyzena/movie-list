@@ -1,3 +1,7 @@
+html {
+    width: 100%;
+}
+
 body {
     background-color: black;
 }
@@ -44,11 +48,11 @@ footer a:hover {
     color: white;
 }
 
-button {
+#auth {
     background: #ff0000 !important;
 }
 
-button:hover {
+#auth:hover {
     background: #f52e2e !important;
 }
 

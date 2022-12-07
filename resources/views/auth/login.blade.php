@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => 'Login'])
 
 @section('content')
 <div class="row justify-content-center">
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="mb-3 row">
-                        <button type="submit" class="col-md-8 offset-md-2 btn btn-danger">
+                        <button id="auth" type="submit" class="col-md-8 offset-md-2 btn btn-danger">
                             {{ __('Login') }} <i class="bi bi-arrow-right"></i>
                         </button>
                     </div>
