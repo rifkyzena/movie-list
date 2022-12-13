@@ -19,9 +19,8 @@
 <body>
     @include('layouts.navbar')
 
-    <main class="main">
-        @yield('content')
-    </main>
+    @yield('content')
+
 
     @include('layouts.footer')
 

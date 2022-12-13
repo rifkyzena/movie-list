@@ -20,3 +20,4 @@ Route::get('/', fn () => redirect()->route('home'));
 Auth::routes();
 
 Route::get('/home', [GuestController::class, 'home'])->name('home');
+Route::get('/actor', [GuestController::class, 'actor'])->name('actor');
