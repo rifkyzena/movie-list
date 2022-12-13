@@ -1,6 +1,6 @@
 @extends('layouts.app', ['title' => 'Actors'])
 @section('content')
-<main id="content">
+<main id="content" style="padding-bottom: 25px;">
     <div class="container">
         <div class="d-flex justify-content-between mt-3 align-items-center">
             <h5 class="text-danger">Actors</h5>

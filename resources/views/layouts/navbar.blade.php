@@ -16,8 +16,8 @@
                         href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link{{ Request::segment(1) == 'home' ? ' active' : '' }}"
-                        href="{{ route('home') }}">Movies</a>
+                    <a class="nav-link{{ Request::segment(1) == 'movie' ? ' active' : '' }}"
+                        href="{{ route('movie') }}">Movies</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{{ Request::segment(1) == 'actor' ? ' active' : '' }}"

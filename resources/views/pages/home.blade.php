@@ -53,7 +53,7 @@
                 @foreach ($movies as $m)
                 <div class="swiper-slide">
                     <div class="card bg-transparent" style="width: 250px;">
-                        <a href="#">
+                        <a href="{{ route('movie.detail', $m->id) }}">
                             <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
                                 alt="{{ $m->title }}" style="aspect-ratio: 3/4; background-size: contain;">
                             <div class="card-body">
@@ -131,7 +131,7 @@
                 @foreach ($movies as $m)
                 <div class="swiper-slide">
                     <div class="card bg-transparent" style="width: 250px;">
-                        <a href="#">
+                        <a href="{{ route('movie.detail', $m->id) }}">
                             <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
                                 alt="{{ $m->title }}" style="aspect-ratio: 3/4; background-size: contain;">
                             <div class="card-body">

@@ -21,3 +21,5 @@ Auth::routes();
 
 Route::get('/home', [GuestController::class, 'home'])->name('home');
 Route::get('/actor', [GuestController::class, 'actor'])->name('actor');
+Route::get('/movie/{id}', [GuestController::class, 'movieDetail'])->name('movie.detail');
+Route::get('/movie', [GuestController::class, 'movie'])->name('movie');
