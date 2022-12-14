@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
@@ -31,5 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::group(['middleware' => 'role:user'], function () {
         Route::get('watchlist', [MemberController::class, 'watchlistIndex'])->name('member.watchlist');
+    });
+    Route::group(['middleware' => 'role:admin'], function () {
+        Route::get('admin/movie/create', [AdminController::class, 'movieCreate'])->name('admin.movie.create');
+        Route::get('admin/actor/create', [AdminController::class, 'actorCreate'])->name('admin.actor.create');
     });
 });

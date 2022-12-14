@@ -6,7 +6,7 @@
             <h5 class="text-danger">Movies</h5>
             <div>
                 <input type="search" class="p-1 rounded bg-dark me-3" placeholder="Search Movie">
-                <button type="button" class="btn btn-sm btn-danger">Add Movie</button>
+                <a href="{{ route('admin.movie.create') }}" class="btn btn-sm btn-danger">Add Movie</a>
             </div>
         </div>
         <div class="row col-12 justify-content-center gap-4 mt-3">
