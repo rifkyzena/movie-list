@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', fn () => redirect()->route('home'));
-
+Route::get('/unauthorized', function () {
+    return view('auth.403');
+});
 Auth::routes();
 
 Route::get('/home', [GuestController::class, 'home'])->name('home');
