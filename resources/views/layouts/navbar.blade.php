@@ -23,6 +23,43 @@
                     <a class="nav-link{{ Request::segment(1) == 'actor' ? ' active' : '' }}"
                         href="{{ route('actor') }}">Actors</a>
                 </li>
+                @if (Auth::user() && Auth::user()->role == 'user')
+                <li class="nav-item">
+                    <a class="nav-link{{ Request::segment(1) == 'watchlist' ? ' active' : '' }}"
+                        href="{{ route('member.watchlist') }}">My
+                        Watchlist</a>
+                </li>
+                @endif
+                @if (Auth::user())
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item text-center" href="{{ route('profile.index') }}">
+                                    <i class="fas fa-cog fa-fw text-dark"></i>
+                                    {{ __('Profile') }}
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-center" id="logout">
+                                    <i class="fas fa-sign-out-alt fa-fw text-dark"></i>
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                @else
                 <li class="nav-item mx-1">
                     <a class="btn {{ Request::segment(1) == 'login' ? ' btn-primary' : ' btn-outline-primary' }}"
                         href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -31,6 +68,7 @@
                     <a class="btn {{ Request::segment(1) == 'register' ? ' btn-primary' : ' btn-outline-primary' }}"
                         href="{{ route('register') }}">{{ __('Register') }}</a>
                 </li>
+                @endif
             </ul>
         </div>
     </div>

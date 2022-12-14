@@ -1,38 +1,46 @@
 * {
   color: white;
 }
+
 input {
   color: white !important;
 }
+
 textarea {
   color: white !important;
 }
+
 select {
   color: white !important;
 }
-tr > td {
-  width:150px;
+
+tr>td {
+  width: 150px;
   background-color: #212529;
-  padding:5px
+  padding: 5px
 }
+
 #content {
   min-height: 95vh;
   overflow-x: hidden;
   background-color: #0f172a;
 }
+
 .carousel .carousel-item {
   height: 600px;
 }
+
 .carousel-item img {
   width: 100%;
 }
+
 .carousel .carousel-overlay::before {
   content: '';
   display: block;
   position: absolute;
   inset: 0;
-  background: rgb(28,28,28);
-  background: linear-gradient(90deg, rgba(28,28,28,0.7) 20%, rgba(0,212,255,0) 64%);
+  background: rgb(28, 28, 28);
+  background: linear-gradient(90deg, rgba(28, 28, 28, 0.7) 20%, rgba(0, 212, 255, 0) 64%);
 }
 
 @media (max-width: 767.98px) {
@@ -40,13 +48,16 @@ tr > td {
     text-align: center;
     height: auto;
   }
-  .banner-content > img {
+
+  .banner-content>img {
     width: 50% !important;
     margin-top: 8px;
   }
+
   .carousel-item img {
     width: auto;
   }
+
   .details-banner {
     height: 800px;
   }

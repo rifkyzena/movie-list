@@ -25,6 +25,23 @@
     @include('layouts.footer')
 
     @include('layouts.ext-js')
+    <script>
+        document.getElementById('logout').addEventListener('click', (e) => {
+            Swal.fire({
+                title: 'Are you sure you want to logout ?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                confirmButtonColor: '#FF0000',
+                cancelButtonText: 'No',
+                cancelButtonColor: '#3085d6',
+            }).then(function(result) {
+                if (result.value) {
+                    document.getElementById('logout-form').submit();
+                }
+            })
+        })
+    </script>
     @stack('js')
 </body>
 

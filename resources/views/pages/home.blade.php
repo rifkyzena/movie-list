@@ -13,7 +13,7 @@
         </div>
         <div class="carousel-inner">
             @foreach ($slider as $s)
-            <div class="carousel-item active position-relative carousel-overlay">
+            <div class="carousel-item {{ $loop->first ? 'active' : '' }} position-relative carousel-overlay">
                 <img src="{{ asset('storage/' . $s->background) }}" class="d-block" alt="{{ $s->title }}">
                 <div
                     class="carousel-caption position-absolute top-0 bottom-0 text-start col-lg-4 d-flex flex-column justify-content-center">
@@ -33,7 +33,7 @@
                     <h3>{{ $s->title }}</h3>
                     <p>{{$s->description}}</p>
                     <button type="button" class="btn btn-danger flex-shrink-0 w-50">
-                        <i class="fa fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-plus"></i>
                         Add to Watchlists
                     </button>
                 </div>
@@ -45,7 +45,7 @@
 
     <!-- Popular Movies -->
     <section class="container my-4" id="popular">
-        <h5><i class="fa fa-solid fa-fire-flame-curved mb-3 mt-4"></i> Popular</h5>
+        <h5><i class="fa-solid fa-fire-flame-curved mb-3 mt-4"></i> Popular</h5>
         <div class="swiper">
             <!-- Movie wrapper -->
             <div class="swiper-wrapper">
@@ -53,7 +53,7 @@
                 @foreach ($movies as $m)
                 <div class="swiper-slide">
                     <div class="card bg-transparent" style="width: 250px;">
-                        <a href="{{ route('movie.detail', $m->id) }}">
+                        <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
                             <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
                                 alt="{{ $m->title }}" style="aspect-ratio: 3/4; background-size: contain;">
                             <div class="card-body">
@@ -88,27 +88,43 @@
         <!-- TagList -->
         <div class="taglist d-flex flex-wrap justify-content-center mb-3 gap-3 overflow-auto">
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Action</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Adventure</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Animated</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Biography</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Comedy</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Crime</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Disaster</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Drama</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Family</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animation</button>
+                style="width: max-content;">Fantasy</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
+                style="width: max-content;">History</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
+                style="width: max-content;">Horror</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
+                style="width: max-content;">Mystery</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
+                style="width: max-content;">Musical</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
+                style="width: max-content;">Romance</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
+                style="width: max-content;">Sci-Fi</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
+                style="width: max-content;">Sport</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
+                style="width: max-content;">Thriller</button>
         </div>
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center mb-3 gap-2">
             <div class="mr-4">Sort By: </div>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
                 style="width: max-content;">Latest</button>
@@ -118,12 +134,14 @@
                 style="width: max-content;">Z-A</button>
         </div>
         <!-- END -->
+        @if (Auth::user() && Auth::user()->role == 'admin')
         <div class="d-flex justify-content-end mt-2 mb-4">
             <button type="button" class="btn btn-sm btn-danger position-relative">
                 <i class="fa-solid fa-plus"></i>
                 Add Movie
             </button>
         </div>
+        @endif
         <div class="swiper">
             <!-- Movie wrapper -->
             <div class="swiper-wrapper">
@@ -131,14 +149,15 @@
                 @foreach ($movies as $m)
                 <div class="swiper-slide">
                     <div class="card bg-transparent" style="width: 250px;">
-                        <a href="{{ route('movie.detail', $m->id) }}">
-                            <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
-                                alt="{{ $m->title }}" style="aspect-ratio: 3/4; background-size: contain;">
-                            <div class="card-body">
-                                <p class="card-title text-truncate">{{ $m->title }}</p>
-                                <p class="card-text">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                        <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
+                            alt="{{ $m->title }}">
+                        <div class="card-body">
+                            <p class="card-title text-truncate">{{ $m->title }}</p>
+                            <div class="d-flex justify-content-between center">
+                                <p class="">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                                <i class="fa-solid fa-check text-danger"></i>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -157,36 +176,3 @@
     <!-- END -->
 </main>
 @endsection
-@push('js')
-<script>
-    new Swiper('.swiper', {
-      // Optional parameters
-      direction: 'horizontal',
-      loop: false,
-      slidesPerView: 1,
-      spaceBetween: 0,
-      pagination: {
-        el: '.swiper-pagination',
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      breakpoints: {
-        // when window width is >= 640px
-        440: {
-          slidesPerView: 2,
-          spaceBetween: 40
-        },
-        740: {
-          slidesPerView: 3,
-          spaceBetween: 80
-        },
-        900: {
-          slidesPerView: 5,
-          spaceBetween: 40
-        }
-      }
-    });
-</script>
-@endpush

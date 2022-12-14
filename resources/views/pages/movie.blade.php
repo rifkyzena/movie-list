@@ -12,7 +12,7 @@
         <div class="row col-12 justify-content-center gap-4 mt-3">
             @foreach ($movies as $m)
             <div class="card bg-transparent" style="width: 250px;">
-                <a href="#">
+                <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
                     <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top" alt="{{ $m->title }}"
                         style="aspect-ratio: 3/4; background-size: contain;">
                     <div class="card-body">

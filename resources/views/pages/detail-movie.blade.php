@@ -14,10 +14,12 @@
                     <div class="ms-5 d-flex flex-column justify-content-center">
                         <div class="d-flex flex-wrap justify-content-between mb-4">
                             <h2>{{ $movie->title }}</h2>
+                            @if (Auth::user() && Auth::user()->role == 'admin')
                             <div class="action fs-4">
                                 <i class="fa-solid fa-pen-to-square"></i>
                                 <i class="fa-solid fa-trash-can"></i>
                             </div>
+                            @endif
                         </div>
                         <div class="tag d-flex flex-wrap gap-3 mb-3">
                             @php
@@ -36,10 +38,10 @@
                             </p>
                         </div>
                         <div>
-                            <span class="fw-bold">
+                            <span class=" fw-bold">
                                 Storyline
                             </span>
-                            <p>{{$movie->description}}</p>
+                            <p>{{{$movie->description}}}</p>
                         </div>
                         <div>
                             <h5 class="fw-bold">{{ $movie->director }}</h5>
@@ -59,20 +61,24 @@
                 <h4 class="ms-3">Cast</h4>
             </div>
             <div class="row col-12">
+                @php
+                $actor = json_decode($movie->actor);
+                // $character_name = json_decode($movie->character_name);
+                @endphp
+                @foreach ($actors as $a)
+                @if(in_array($a->name, $actor))
                 <div class="card me-3 rounded bg-transparent" style="width: 12rem;">
-                    <img src="/assets/90dba690fd957df47c884064e0a2e36f.jpg" class="card-img-top w-100" alt="...">
-                    <div class="card-body bg-danger rounded">
-                        <h5 class="card-title">John Doe</h5>
-                        <p class="card-text">Thomas / lorem</p>
-                    </div>
+                    <a href="{{ route('actor.detail', $a->id) }}" class="text-decoration-none">
+                        <img src="{{ asset('storage/' . $a->image_url) }}" class="card-img-top w-100"
+                            alt="{{ $a->name }}">
+                        <div class="card-body bg-danger rounded">
+                            <h5 class="card-title">{{ $a->name }}</h5>
+                            <p class="card-text">Thomas / lorem</p>
+                        </div>
+                    </a>
                 </div>
-                <div class="card bg-transparent" style="width: 12rem;">
-                    <img src="/assets/90dba690fd957df47c884064e0a2e36f.jpg" class="card-img-top" alt="...">
-                    <div class="card-body bg-danger rounded">
-                        <h5 class="card-title">John Doe</h5>
-                        <p class="card-text">Thomas / lorem</p>
-                    </div>
-                </div>
+                @endif
+                @endforeach
             </div>
         </div>
         <!-- END -->
@@ -83,14 +89,16 @@
                 <h4 class="ms-3">More</h4>
             </div>
             <div class="row col-12">
-                @foreach ($movies as $m)
+                @foreach ($more as $m)
                 <div class="card bg-transparent me-2 border-0" style="width: 12rem;">
-                    <img src="{{ asset('storage/' . $m->image_thumbnail) }}" class="card-img-top" alt="{{ $m->title }}"
-                        style="aspect-ratio: 3/4; background-size: contain;">
-                    <div class="card-body">
-                        <p class="card-title text-truncate">{{ $m->title }}</p>
-                        <p class="card-text">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
-                    </div>
+                    <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
+                        <img src="{{ asset('storage/' . $m->image_thumbnail) }}" class="card-img-top"
+                            alt="{{ $m->title }}" style="aspect-ratio: 3/4; background-size: contain;">
+                        <div class="card-body">
+                            <p class="card-title text-truncate">{{ $m->title }}</p>
+                            <p class="card-text">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                        </div>
+                    </a>
                 </div>
                 @endforeach
             </div>

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +22,14 @@ Route::get('/', fn () => redirect()->route('home'));
 Auth::routes();
 
 Route::get('/home', [GuestController::class, 'home'])->name('home');
+Route::get('/actor/{id}', [GuestController::class, 'actorDetail'])->name('actor.detail');
 Route::get('/actor', [GuestController::class, 'actor'])->name('actor');
 Route::get('/movie/{id}', [GuestController::class, 'movieDetail'])->name('movie.detail');
 Route::get('/movie', [GuestController::class, 'movie'])->name('movie');
+
+Route::middleware('auth')->group(function () {
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::group(['middleware' => 'role:user'], function () {
+        Route::get('watchlist', [MemberController::class, 'watchlistIndex'])->name('member.watchlist');
+    });
+});
