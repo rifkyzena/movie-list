@@ -41,14 +41,23 @@
             <p style="text-align: justify;">{{$actor->biography}}</p>
             <h5>Known For</h5>
             <div class="movielist row col-12">
-                <div class="card bg-transparent me-2 border-0" style="width: 12rem;">
-                    <img src="/assets/Welcome_to_Raccoon_City.jpg" class="card-img-top" alt="..."
+                @foreach ($movies as $m)
+                @php
+                $act = json_decode($m->actor);
+                @endphp
+                @foreach ($act as $a)
+                @if ($actor->name == $a)
+                <div class="card bg-transparent border-0 col-lg-2 col-md-4 col-6">
+                    <img src="{{ asset('storage/'.$m->image_thumbnail) }}" class="card-img-top" alt="{{ $m->title }}"
                         style="aspect-ratio: 3/4; background-size: contain;">
                     <div class="card-body">
-                        <p class="card-title text-truncate">Tukang Bubur Naik Haji</p>
-                        <p class="card-text">2016</p>
+                        <p class="card-title text-truncate">{{ $m->title }}</p>
+                        <p class="card-text">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
                     </div>
                 </div>
+                @endif
+                @endforeach
+                @endforeach
             </div>
         </div>
     </div>

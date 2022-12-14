@@ -4,14 +4,16 @@
     <div class="container">
         <div class="d-flex justify-content-between mt-3 align-items-center">
             <h5 class="text-danger">Movies</h5>
+            @if (Auth::user() && Auth::user()->role == 'admin')
             <div>
                 <input type="search" class="p-1 rounded bg-dark me-3" placeholder="Search Movie">
                 <a href="{{ route('admin.movie.create') }}" class="btn btn-sm btn-danger">Add Movie</a>
             </div>
+            @endif
         </div>
-        <div class="row col-12 justify-content-center gap-4 mt-3">
+        <div class="row col-12 justify-content-center mt-3">
             @foreach ($movies as $m)
-            <div class="card bg-transparent" style="width: 250px;">
+            <div class="card bg-transparent col-lg-2 col-md-4 col-6">
                 <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
                     <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top" alt="{{ $m->title }}"
                         style="aspect-ratio: 3/4; background-size: contain;">
