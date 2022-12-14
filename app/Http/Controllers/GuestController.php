@@ -21,6 +21,12 @@ class GuestController extends Controller
         return view('pages.actor', compact('actors'));
     }
 
+    public function actorDetail($id)
+    {
+        $actor = Actor::find($id);
+        return view('pages.detail-actor', compact('actor'));
+    }
+
     public function movie()
     {
         $movies = Movie::all();
@@ -30,7 +36,8 @@ class GuestController extends Controller
     public function movieDetail($id)
     {
         $movie = Movie::find($id);
-        $movies = Movie::take(6)->get();
-        return view('pages.detail-movie', compact('movie', 'movies'));
+        $more = Movie::take(6)->get();
+        $actors = Actor::all();
+        return view('pages.detail-movie', compact('movie', 'more', 'actors'));
     }
 }
