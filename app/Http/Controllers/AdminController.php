@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actor;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,8 @@ class AdminController extends Controller
 {
     public function movieCreate()
     {
-        return view('pages.admin.movie.create');
+        $actors = Actor::select('name')->get();
+        return view('pages.admin.movie.create', compact('actors'));
     }
 
     public function movieStore(Request $request)
