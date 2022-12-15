@@ -9,5 +9,4 @@ class Movie extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    protected $casts = ['genre', 'actor', 'character_name'];
 }

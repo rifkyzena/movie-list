@@ -16,8 +16,12 @@
                             <h2>{{ $movie->title }}</h2>
                             @if (Auth::user() && Auth::user()->role == 'admin')
                             <div class="action fs-4">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                                <i class="fa-solid fa-trash-can"></i>
+                                <a href="{{ route('admin.movie.edit', $movie->id) }}" class="btn btn-warning btn-sm">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="{{ route('admin.movie.destroy', $movie->id) }}" class="btn btn-danger btn-sm">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
                             </div>
                             @endif
                         </div>

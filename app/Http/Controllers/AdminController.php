@@ -24,20 +24,23 @@ class AdminController extends Controller
             'character_name' => 'required|array',
             'director' => 'required|min:8',
             'release_date' => 'required',
-            'image_thumbnail' => 'image|mime:jpeg,jpg,png,gif',
-            'background' => 'image|mime:jpeg,jpg,png,gif'
+            'image_thumbnail' => 'image|mimes:jpeg,jpg,png,gif',
+            'background' => 'image|mimes:jpeg,jpg,png,gif'
         ]);
+
+        $image_thumbnail = $request->file('image_thumbnail')->store('movies/thumbnails');
+        $background = $request->file('background')->store('movies/backgrounds');
 
         $model = Movie::create([
             'title' => $request->title,
             'description' => $request->description,
-            'genre' => $request->genre,
-            'actor' => $request->actor,
-            'character_name' => $request->character_name,
+            'genre' => json_encode($request->genre),
+            'actor' => json_encode($request->actor),
+            'character_name' => json_encode($request->character_name),
             'director' => $request->director,
             'release_date' => $request->release_date,
-            'image_thumbnail' => $request->image_thumbnail,
-            'background' => $request->background
+            'image_thumbnail' => $image_thumbnail,
+            'background' => $background
         ]);
 
         if ($model) {

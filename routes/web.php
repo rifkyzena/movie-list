@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
         Route::get('watchlist', [MemberController::class, 'watchlistIndex'])->name('member.watchlist');
     });
     Route::group(['middleware' => 'role:admin'], function () {
+        Route::delete('admin/movie/{id}', [AdminController::class, 'movieDestroy'])->name('admin.movie.destroy');
+        Route::put('admin/movie/{id}', [AdminController::class, 'movieUpdate'])->name('admin.movie.update');
+        Route::get('admin/movie/{id}/edit', [AdminController::class, 'movieEdit'])->name('admin.movie.edit');
         Route::post('admin/movie/create', [AdminController::class, 'movieStore'])->name('admin.movie.create');
         Route::get('admin/movie/create', [AdminController::class, 'movieCreate'])->name('admin.movie.create');
         Route::get('admin/actor/create', [AdminController::class, 'actorCreate'])->name('admin.actor.create');
