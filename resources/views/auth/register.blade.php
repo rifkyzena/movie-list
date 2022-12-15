@@ -10,7 +10,8 @@
             <div class="col-8">
                 <input type="text" class="form-control @error('username')
                     is-invalid
-                @enderror bg-dark border-0" id="username" name="username" placeholder="Enter your username">
+                @enderror bg-dark border-0" id="username" name="username" placeholder="Enter your username"
+                    value="{{ old('username') }}">
                 @error('username')
                 <span class="invalid-feedback" role="alert">
                     <strong style="color: #dc3545 !important">{{ $message }}</strong>
@@ -23,7 +24,8 @@
             <div class="col-8">
                 <input type="email" class="form-control @error('email')
                     is-invalid
-                @enderror bg-dark border-0" id="email" name="email" placeholder="Enter your email">
+                @enderror bg-dark border-0" id="email" name="email" placeholder="Enter your email"
+                    value="{{ old('email') }}">
                 @error('email')
                 <span class="invalid-feedback" role="alert">
                     <strong style="color: #dc3545 !important">{{ $message }}</strong>

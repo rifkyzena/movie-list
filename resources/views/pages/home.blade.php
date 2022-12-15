@@ -32,10 +32,12 @@
                     </p>
                     <h3>{{ $s->title }}</h3>
                     <p>{{$s->description}}</p>
+                    @if (Auth::user() && Auth::user()->role == 'user')
                     <button type="button" class="btn btn-danger flex-shrink-0 w-50">
                         <i class="fa-solid fa-plus"></i>
                         Add to Watchlists
                     </button>
+                    @endif
                 </div>
             </div>
             @endforeach
@@ -50,7 +52,7 @@
             <!-- Movie wrapper -->
             <div class="swiper-wrapper">
                 <!-- Movie Item -->
-                @foreach ($movies as $m)
+                @foreach ($movie_populars as $m)
                 <div class="swiper-slide">
                     <div class="card bg-transparent" style="width: 250px;">
                         <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
@@ -136,10 +138,10 @@
         <!-- END -->
         @if (Auth::user() && Auth::user()->role == 'admin')
         <div class="d-flex justify-content-end mt-2 mb-4">
-            <button type="button" class="btn btn-sm btn-danger position-relative">
+            <a href="{{ route('admin.movie.create') }}" class="btn btn-sm btn-danger position-relative">
                 <i class="fa-solid fa-plus"></i>
                 Add Movie
-            </button>
+            </a>
         </div>
         @endif
         <div class="swiper">
@@ -155,7 +157,9 @@
                             <p class="card-title text-truncate">{{ $m->title }}</p>
                             <div class="d-flex justify-content-between center">
                                 <p class="">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                                @if (Auth::user() && Auth::user()->role == 'user')
                                 <i class="fa-solid fa-check text-danger"></i>
+                                @endif
                             </div>
                         </div>
                     </div>

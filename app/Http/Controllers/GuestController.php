@@ -11,8 +11,9 @@ class GuestController extends Controller
     public function home()
     {
         $movies = Movie::all();
+        $movie_populars = Movie::take(8)->get();
         $slider = Movie::take(3)->get();
-        return view('pages.home', compact('movies', 'slider'));
+        return view('pages.home', compact('movies', 'slider', 'movie_populars'));
     }
 
     public function actor()
