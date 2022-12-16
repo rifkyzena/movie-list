@@ -19,9 +19,9 @@
                                 <a href="{{ route('admin.movie.edit', $movie->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
-                                <a href="{{ route('admin.movie.destroy', $movie->id) }}" class="btn btn-danger btn-sm">
+                                <button class="btn btn-danger btn-sm" id="delete" value="{{ $movie->id }}">
                                     <i class="fa-solid fa-trash-can"></i>
-                                </a>
+                                </button>
                             </div>
                             @endif
                         </div>
@@ -67,10 +67,6 @@
             <div class="row col-12">
                 @php
 
-                // ambil semua nama aktor di tabel aktor, masukan kedalam array
-                // looping semua data aktor di tabel movie
-                // bandingkan aktor dari tabel movie dengan semua aktor dari tabel aktor
-                // jika iyam, maka ketemu
                 $actor = json_decode($movie->actor);
                 $character_name = json_decode($movie->character_name);
                 @endphp
@@ -117,3 +113,57 @@
     </div>
 </main>
 @endsection
+@push('js')
+<script>
+    var Toast = Swal.mixin({
+        toast: true, 
+        position: 'top-end', 
+        showConfirmButton: false, 
+        timer: 3000, 
+        timerProgressBar: true 
+    });
+
+    @if(session('success'))
+        Toast.fire({
+        icon: 'success',
+        title: '{!! session('success') !!}'
+        });
+    @endif
+
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('body').on('click', '#delete', function() {
+            var id = $(this).val();
+
+            Swal.fire({
+                title: 'Are you sure you want to delete this movie data ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                confirmButtonColor: '#FF0000',
+                cancelButtonText: 'No',
+                cancelButtonColor: '#3085d6',
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/admin/movie/" + id,
+                        success: function(response) {
+                            if (response.success) {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.success
+                                });
+                            }
+                        }
+                    });
+                    window.location.href = '/movie';
+                }
+            })
+        });
+</script>
+@endpush

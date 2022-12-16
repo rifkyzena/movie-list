@@ -66,24 +66,10 @@
                 @enderror border-0" placeholder="Select genre" name="genre[]" id="genre" multiple
                     style="background-color: black !important">
                     <option>Select Genre</option>
-                    <option value="Action">Action</option>
-                    <option value="Adventure">Adventure</option>
-                    <option value="Animated">Animated</option>
-                    <option value="Biography">Biography</option>
-                    <option value="Comedy">Comedy</option>
-                    <option value="Crime">Crime</option>
-                    <option value="Disaster">Disaster</option>
-                    <option value="Drama">Drama</option>
-                    <option value="Family">Family</option>
-                    <option value="Fantasy">Fantasy</option>
-                    <option value="History">History</option>
-                    <option value="Horror">Horror</option>
-                    <option value="Mystery">Mystery</option>
-                    <option value="Musical">Musical</option>
-                    <option value="Romance">Romance</option>
-                    <option value="Sci-Fi">Sci-Fi</option>
-                    <option value="Sport">Sport</option>
-                    <option value="Thriller">Thriller</option>
+                    @foreach ($genres as $g)
+                    <option value="{{ $g['name'] }}" {{is_array(old('genre')) && in_array($g['name'], old('genre'))
+                        ? 'selected' : '' }}>{{ $g['name'] }}</option>
+                    @endforeach
                 </select>
                 @error('genre')
                 <span class="invalid-feedback" role="alert">
