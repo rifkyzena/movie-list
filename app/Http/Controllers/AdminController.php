@@ -158,4 +158,84 @@ class AdminController extends Controller
     {
         return view('pages.admin.actor.create');
     }
+
+    public function actorStore(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'gender' => 'required',
+            'biography' => 'required|min:10',
+            'date_of_birth' => 'required',
+            'place_of_birth' => 'required',
+            'image_url' => 'image|mimes:jpeg,jpg,png,gif',
+            'popularity' => 'numeric'
+        ]);
+
+        $image_url = $request->file('image_url')->store('actors');
+        $model = Actor::create([
+            'name' => $request->name,
+            'gender' => $request->gender,
+            'biography' => $request->biography,
+            'date_of_birth' => $request->date_of_birth,
+            'place_of_birth' => $request->place_of_birth,
+            'image_url' => $image_url,
+            'popularity' => $request->popularity,
+        ]);
+        if ($model) {
+            return redirect()->route('actor')->with(['success' => 'Data Saved Successfully']);
+        } else {
+            return redirect()->back()->withInput()->with(['error' => 'Some problem occurred, please try again']);
+        }
+    }
+
+    public function actorEdit($id)
+    {
+        $actor = Actor::find($id);
+        return view('pages.admin.actor.edit', compact('actor'));
+    }
+
+    public function actorUpdate(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'gender' => 'required',
+            'biography' => 'required|min:10',
+            'date_of_birth' => 'required',
+            'place_of_birth' => 'required',
+            'image_url' => 'image|mimes:jpeg,jpg,png,gif',
+            'popularity' => 'numeric'
+        ]);
+
+        if ($request->file('image_url')) {
+            if ($request->image_url_old) {
+                Storage::delete($request->image_url_old);
+            }
+            $image_url = $request->file('image_url')->store('movies/image_urls');
+        } else {
+            $image_url = $request->image_url_old;
+        }
+
+        $model = Actor::find($request->id);
+        $model->update([
+            'name' => $request->name,
+            'gender' => $request->gender,
+            'biography' => $request->biography,
+            'date_of_birth' => $request->date_of_birth,
+            'place_of_birth' => $request->place_of_birth,
+            'image_url' => $image_url,
+            'popularity' => $request->popularity,
+        ]);
+
+        if ($model) {
+            return redirect()->route('actor.detail', $request->id)->with(['success' => 'Data Updated Successfully']);
+        } else {
+            return redirect()->back()->withInput()->with(['error' => 'Some problem occurred, please try again']);
+        }
+    }
+
+    public function actorDestroy($id)
+    {
+        Actor::find($id)->delete();
+        return response()->json(['success' => 'Data Deleted Successfully']);
+    }
 }

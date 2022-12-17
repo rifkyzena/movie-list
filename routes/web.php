@@ -41,6 +41,10 @@ Route::middleware('auth')->group(function () {
         Route::get('admin/movie/{id}/edit', [AdminController::class, 'movieEdit'])->name('admin.movie.edit');
         Route::post('admin/movie/create', [AdminController::class, 'movieStore'])->name('admin.movie.create');
         Route::get('admin/movie/create', [AdminController::class, 'movieCreate'])->name('admin.movie.create');
+        Route::delete('admin/actor/{id}', [AdminController::class, 'actorDestroy'])->name('admin.actor.destroy');
+        Route::put('admin/actor/update', [AdminController::class, 'actorUpdate'])->name('admin.actor.update');
+        Route::get('admin/actor/{id}/edit', [AdminController::class, 'actorEdit'])->name('admin.actor.edit');
+        Route::post('admin/actor/create', [AdminController::class, 'actorStore'])->name('admin.actor.create');
         Route::get('admin/actor/create', [AdminController::class, 'actorCreate'])->name('admin.actor.create');
     });
 });

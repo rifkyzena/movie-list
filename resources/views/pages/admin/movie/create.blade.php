@@ -65,7 +65,7 @@
                     is-invalid
                 @enderror border-0" placeholder="Select genre" name="genre[]" id="genre" multiple
                     style="background-color: black !important">
-                    <option>Select Genre</option>
+                    <option value="">Select Genre</option>
                     @foreach ($genres as $g)
                     <option value="{{ $g['name'] }}" {{is_array(old('genre')) && in_array($g['name'], old('genre'))
                         ? 'selected' : '' }}>{{ $g['name'] }}</option>
@@ -84,7 +84,7 @@
                         <select class="form-select @error('actor')
                             is-invalid
                         @enderror bg-dark border-0" placeholder="Select actor" name="actor[]">
-                            <option selected>Select Actor</option>
+                            <option value="">Select Actor</option>
                             @foreach ($actors as $a)
                             <option value="{{ $a->name }}">{{ $a->name }}</option>
                             @endforeach

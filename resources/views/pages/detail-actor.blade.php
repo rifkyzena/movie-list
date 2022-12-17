@@ -7,11 +7,13 @@
                 <img src="{{ asset('storage/'. $actor->image_url) }}" alt="{{ $actor->name }}" class="w-100"
                     style="max-width: 400px;">
                 @if (Auth::user() && Auth::user()->role == 'admin')
-                <div class="position-absolute d-flex flex-column gap-2 me-1 mt-1" style="top: 0; right: 0;">
-                    <button type="button" class="btn btn-danger rounded-circle" style="width: max-content;"><i
-                            class="fa-solid fa-pen-to-square"></i></button>
-                    <button type="button" class="btn btn-danger rounded-circle" style="width: max-content;"><i
-                            class="fa-solid fa-trash-can"></i></button>
+                <div class="action fs-4">
+                    <a href="{{ route('admin.actor.edit', $actor->id) }}" class="btn btn-warning btn-sm">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <button class="btn btn-danger btn-sm" id="delete" value="{{ $actor->id }}">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
                 @endif
             </div>
@@ -28,7 +30,7 @@
                     <span>{{ $actor->gender }}</span>
                 </div>
                 <div id="bhirtday">
-                    <span class="fw-semibold">Bhirtday</span>
+                    <span class="fw-semibold">Birthday</span>
                     <br>
                     <span>{{ \Carbon\Carbon::parse($actor->date_of_birth)->format('d F Y') }}</span>
                 </div>
@@ -63,3 +65,57 @@
     </div>
 </main>
 @endsection
+@push('js')
+<script>
+    var Toast = Swal.mixin({
+        toast: true, 
+        position: 'top-end', 
+        showConfirmButton: false, 
+        timer: 3000, 
+        timerProgressBar: true 
+    });
+
+    @if(session('success'))
+        Toast.fire({
+        icon: 'success',
+        title: '{!! session('success') !!}'
+        });
+    @endif
+
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('body').on('click', '#delete', function() {
+            var id = $(this).val();
+
+            Swal.fire({
+                title: 'Are you sure you want to delete this actor data ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                confirmButtonColor: '#FF0000',
+                cancelButtonText: 'No',
+                cancelButtonColor: '#3085d6',
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/admin/actor/" + id,
+                        success: function(response) {
+                            if (response.success) {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.success
+                                });
+                            }
+                        }
+                    });
+                    window.location.href = '/actor';
+                }
+            })
+        });
+</script>
+@endpush

@@ -37,10 +37,10 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user"></i>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarDropdown">
                             <li>
                                 <a class="dropdown-item text-center" href="{{ route('profile.index') }}">
-                                    <i class="fas fa-cog fa-fw text-dark"></i>
+                                    <i class="fas fa-cog fa-fw"></i>
                                     {{ __('Profile') }}
                                 </a>
                             </li>
@@ -49,7 +49,7 @@
                             </li>
                             <li>
                                 <a class="dropdown-item text-center" id="logout">
-                                    <i class="fas fa-sign-out-alt fa-fw text-dark"></i>
+                                    <i class="fas fa-sign-out-alt fa-fw"></i>
                                     {{ __('Logout') }}
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
