@@ -67,22 +67,22 @@ class GuestController extends Controller
     }
 
     public function movieSearch(Request $request){
-        $model = Movie::where('title','LIKE','%'.$request->param.'%')->get();
+        $model = Movie::with('watchlist')->where('title','LIKE','%'.$request->param.'%')->get();
         return response()->json($model);
     }
 
     public function movieSortLatest(){
-        $model = Movie::orderBy('id', 'DESC')->get();
+        $model = Movie::with('watchlist')->orderBy('id', 'DESC')->get();
         return response()->json($model);
     }
 
     public function movieSortAsc(){
-        $model = Movie::orderBy('title', 'ASC')->get();
+        $model = Movie::with('watchlist')->orderBy('title', 'ASC')->get();
         return response()->json($model);
     }
 
     public function movieSortDesc(){
-        $model = Movie::orderBy('title', 'DESC')->get();
+        $model = Movie::with('watchlist')->orderBy('title', 'DESC')->get();
         return response()->json($model);
     }
 
@@ -97,6 +97,7 @@ class GuestController extends Controller
                         'title' => $m->title,
                         'release_date' => $m->release_date,
                         'image_thumbnail' => $m->image_thumbnail,
+                        'watchlist' => $m->watchlist
                     ]);
                 }
             }

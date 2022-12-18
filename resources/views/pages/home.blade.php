@@ -130,12 +130,14 @@
                             <p class="card-title text-truncate">{{ $m->title }}</p>
                             <div class="d-flex justify-content-between center">
                                 <p>{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                                @if ($user && $user->role == 'user')
                                 @if ($m->watchlist)
                                 <i class="fa-solid fa-check text-success"></i>
                                 @else
                                 <a href="{{ route('member.watchlist.add', $m->id) }}">
                                     <i class="fa-solid fa-plus text-danger"></i>
                                 </a>
+                                @endif
                                 @endif
                             </div>
                         </div>
@@ -201,6 +203,16 @@
             }
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
+                let icon = ''
+                if(data[i].watchlist != null){
+                    icon = '<i class="fa-solid fa-check text-success"></i>';
+                }else{
+                    var url = '{{ route("member.watchlist.add", ":id") }}';
+                    url = url.replace(':id', data[i].id);
+                    icon = '<a href="'+url+'">'+
+                                    '<i class="fa-solid fa-plus text-danger"></i>'+
+                                '</a>';
+                }
                 newRowAdd = '<div class="swiper-slide" id="movie" style="width: max-content;">'+
                     '<div class="card bg-transparent">'+
                         '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
@@ -208,7 +220,9 @@
                             '<p class="card-title text-truncate">'+data[i].title+'</p>'+
                             '<div class="d-flex justify-content-between center">'+
                                 '<p>'+date.getFullYear()+'</p>'+
-                                '<i class="fa-solid fa-check text-danger"></i>'+
+                                '@if ($user && $user->role == "user")'+
+                                    icon +
+                                '@endif'+
                             '</div>'+
                         '</div>'+
                     '</div>'+
@@ -239,6 +253,16 @@
                 }
                 for(i=0; i<count;i++){
                     let date = new Date(data[i].release_date);
+                    let icon = ''
+                    if(data[i].watchlist != null){
+                        icon = '<i class="fa-solid fa-check text-success"></i>';
+                    }else{
+                        var url = '{{ route("member.watchlist.add", ":id") }}';
+                        url = url.replace(':id', data[i].id);
+                        icon = '<a href="'+url+'">'+
+                                        '<i class="fa-solid fa-plus text-danger"></i>'+
+                                    '</a>';
+                    }
                     newRowAdd = '<div class="swiper-slide" id="movie">'+
                         '<div class="card bg-transparent">'+
                             '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
@@ -246,7 +270,9 @@
                                 '<p class="card-title text-truncate">'+data[i].title+'</p>'+
                                 '<div class="d-flex justify-content-between center">'+
                                     '<p>'+date.getFullYear()+'</p>'+
-                                    '<i class="fa-solid fa-check text-danger"></i>'+
+                                    '@if ($user && $user->role == "user")'+
+                                        icon +
+                                    '@endif'+
                                 '</div>'+
                             '</div>'+
                         '</div>'+
@@ -266,6 +292,16 @@
             let count = data.length
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
+                let icon = ''
+                if(data[i].watchlist != null){
+                    icon = '<i class="fa-solid fa-check text-success"></i>';
+                }else{
+                    var url = '{{ route("member.watchlist.add", ":id") }}';
+                    url = url.replace(':id', data[i].id);
+                    icon = '<a href="'+url+'">'+
+                                    '<i class="fa-solid fa-plus text-danger"></i>'+
+                                '</a>';
+                }
                 newRowAdd = '<div class="swiper-slide" id="movie">'+
                     '<div class="card bg-transparent">'+
                         '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
@@ -273,7 +309,9 @@
                             '<p class="card-title text-truncate">'+data[i].title+'</p>'+
                             '<div class="d-flex justify-content-between center">'+
                                 '<p>'+date.getFullYear()+'</p>'+
-                                '<i class="fa-solid fa-check text-danger"></i>'+
+                                '@if ($user && $user->role == "user")'+
+                                    icon +
+                                '@endif'+
                             '</div>'+
                         '</div>'+
                     '</div>'+
@@ -292,6 +330,16 @@
             let count = data.length
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
+                let icon = ''
+                if(data[i].watchlist != null){
+                    icon = '<i class="fa-solid fa-check text-success"></i>';
+                }else{
+                    var url = '{{ route("member.watchlist.add", ":id") }}';
+                    url = url.replace(':id', data[i].id);
+                    icon = '<a href="'+url+'">'+
+                                    '<i class="fa-solid fa-plus text-danger"></i>'+
+                                '</a>';
+                }
                 newRowAdd = '<div class="swiper-slide" id="movie">'+
                     '<div class="card bg-transparent">'+
                         '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
@@ -299,7 +347,9 @@
                             '<p class="card-title text-truncate">'+data[i].title+'</p>'+
                             '<div class="d-flex justify-content-between center">'+
                                 '<p>'+date.getFullYear()+'</p>'+
-                                '<i class="fa-solid fa-check text-danger"></i>'+
+                                '@if ($user && $user->role == "user")'+
+                                    icon +
+                                '@endif'+
                             '</div>'+
                         '</div>'+
                     '</div>'+
@@ -318,6 +368,16 @@
             let count = data.length
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
+                let icon = ''
+                if(data[i].watchlist != null){
+                    icon = '<i class="fa-solid fa-check text-success"></i>';
+                }else{
+                    var url = '{{ route("member.watchlist.add", ":id") }}';
+                    url = url.replace(':id', data[i].id);
+                    icon = '<a href="'+url+'">'+
+                                    '<i class="fa-solid fa-plus text-danger"></i>'+
+                                '</a>';
+                }
                 newRowAdd = '<div class="swiper-slide" id="movie">'+
                     '<div class="card bg-transparent">'+
                         '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
@@ -325,7 +385,9 @@
                             '<p class="card-title text-truncate">'+data[i].title+'</p>'+
                             '<div class="d-flex justify-content-between center">'+
                                 '<p>'+date.getFullYear()+'</p>'+
-                                '<i class="fa-solid fa-check text-danger"></i>'+
+                                '@if ($user && $user->role == "user")'+
+                                    icon +
+                                '@endif'+
                             '</div>'+
                         '</div>'+
                     '</div>'+
