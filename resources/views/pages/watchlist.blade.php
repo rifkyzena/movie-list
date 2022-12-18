@@ -4,7 +4,7 @@
     <div class="container row mx-auto mt-4">
         <div class="d-flex align-items-center gap-2 mb-3">
             <i class="fa-solid fa-bookmark text-danger fs-3"></i>
-            <h3 class="">My <span class="text-danger">WatchList</span></h3>
+            <h3>My <span class="text-danger">WatchList</span></h3>
         </div>
         <div class="input-group mb-4">
             <input type="search" class="form-control bg-dark border-0" placeholder="Search" aria-label="search"
@@ -14,7 +14,7 @@
             </button>
         </div>
         <div class="d-flex align-items-center gap-2 col-2">
-            <i class="fa-solid fa-filter"></i>
+            <i class="fa-solid fa-filter text-white"></i>
             <select class="form-select bg-dark border-0" placeholder="Select gender">
                 <option selected>All</option>
                 <option value="Planned">Planned</option>
@@ -23,87 +23,36 @@
             </select>
         </div>
         <table class="table table-borderless border-primary mt-3">
-            <tr>
-                <th scope="col">Poster</th>
-                <th scope="col">Title</th>
-                <th scope="col">Status</th>
-                <th scope="col" class="text-center">Actions</th>
-            </tr>
+            <thead>
+                <tr class="align-middle text-center">
+                    <th scope="col">Poster</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($watchlists as $w)
+                <tr class="align-middle text-center">
+                    <td>
+                        <img src="{{ asset('storage/' . $w->movie->image_thumbnail) }}" alt="{{ $w->movie->title }}"
+                            style="max-width: 100px;">
+                    </td>
+                    <td>{{ $w->movie->title }}</td>
+                    <td class="text-success">{{ $w->status }}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal"
+                            data-bs-target="#profileModal">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                    </td>
+                </tr>
+                @empty
+                <td colspan="4" class="text-center">No Data Watchlist Found</td>
+                @endforelse
+            </tbody>
         </table>
-        <table class="" style="border-collapse: separate; border-spacing: 0 15px; ">
-            <tr class="align-middle">
-                <td scope="row">
-                    <img src="/assets/poster.jpg" alt="" style="max-width: 100px;">
-                </td>
-                <td>God of War</td>
-                <td class="text-success">Pending</td>
-                <td class="text-center">
-                    <button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal"
-                        data-bs-target="#profileModal">
-                        <i class="fa-solid fa-ellipsis"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr class="align-middle">
-                <td scope="row">
-                    <img src="/assets/poster.jpg" alt="" style="max-width: 100px;">
-                </td>
-                <td>God of War</td>
-                <td class="text-success">Pending</td>
-                <td class="text-center">
-                    <button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal"
-                        data-bs-target="#profileModal">
-                        <i class="fa-solid fa-ellipsis"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr class="align-middle">
-                <td scope="row">
-                    <img src="/assets/poster.jpg" alt="" style="max-width: 100px;">
-                </td>
-                <td>God of War</td>
-                <td class="text-success">Pending</td>
-                <td class="text-center">
-                    <button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal"
-                        data-bs-target="#profileModal">
-                        <i class="fa-solid fa-ellipsis"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr class="align-middle">
-                <td scope="row">
-                    <img src="/assets/poster.jpg" alt="" style="max-width: 100px;">
-                </td>
-                <td>God of War</td>
-                <td class="text-success">Pending</td>
-                <td class="text-center">
-                    <button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal"
-                        data-bs-target="#profileModal">
-                        <i class="fa-solid fa-ellipsis"></i>
-                    </button>
-                </td>
-            </tr>
-        </table>
-        <div class="d-flex justify-content-between mt-2">
-            <span>Showing 1 to 4 of 6 Result</span>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        {{ $watchlists->links() }}
     </div>
 </main>
 
@@ -134,3 +83,21 @@
 </div>
 <!-- END -->
 @endsection
+@push('js')
+<script>
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    });
+
+    @if(session('success'))
+        Toast.fire({
+        icon: 'success',
+        title: '{!! session('success') !!}'
+        });
+    @endif
+</script>
+@endpush

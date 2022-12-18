@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::put('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::group(['middleware' => 'role:user'], function () {
+        Route::get('watchlist/movie/{id}', [MemberController::class, 'watchlistAdd'])->name('member.watchlist.add');
         Route::get('watchlist', [MemberController::class, 'watchlistIndex'])->name('member.watchlist');
     });
     Route::group(['middleware' => 'role:admin'], function () {

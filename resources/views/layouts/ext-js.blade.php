@@ -10,7 +10,8 @@
       direction: 'horizontal',
       loop: false,
       slidesPerView: 1,
-      spaceBetween: 0,
+      spaceBetween: 10,
+      centeredSlidesBound: true,
       pagination: {
         el: '.swiper-pagination',
       },

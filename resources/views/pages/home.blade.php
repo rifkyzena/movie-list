@@ -33,10 +33,10 @@
                     <h3>{{ $s->title }}</h3>
                     <p>{{$s->description}}</p>
                     @if ($user && $user->role == 'user')
-                    <button type="button" class="btn btn-danger flex-shrink-0 w-50">
+                    <a href="{{ route('member.watchlist.add', $s->id) }}" class="btn btn-danger flex-shrink-0 w-50">
                         <i class="fa-solid fa-plus"></i>
                         Add to Watchlists
-                    </button>
+                    </a>
                     @endif
                 </div>
             </div>
@@ -47,23 +47,28 @@
 
     <!-- Popular Movies -->
     <section class="container my-4" id="popular">
-        <h5><i class="fa-solid fa-fire-flame-curved mb-3 mt-4"></i> Popular</h5>
+        <div class="d-flex align-items-center gap-1 mb-3">
+            <i class="fa-solid fa-fire-flame-curved text-white"></i>
+            <h5 style="margin: 0 !important">Popular</h5>
+        </div>
         <div class="swiper">
             <!-- Movie wrapper -->
             <div class="swiper-wrapper">
                 <!-- Movie Item -->
                 @foreach ($movie_populars as $m)
                 <div class="swiper-slide">
-                    <div class="card bg-transparent">
-                        <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
+                    <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
+                        <div class="card bg-transparent">
                             <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
-                                alt="{{ $m->title }}" style="aspect-ratio: 3/4; background-size: contain;">
+                                alt="{{ $m->title }}">
                             <div class="card-body">
                                 <p class="card-title text-truncate">{{ $m->title }}</p>
-                                <p class="card-text">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                                <div class="d-flex justify-content-between center">
+                                    <p>{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                                </div>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
                 @endforeach
             </div>
@@ -95,7 +100,7 @@
             @endforeach
         </div>
         <div class="d-flex align-items-center mb-3 gap-2">
-            <div class="mr-4">Sort By: </div>
+            <div class="mr-4 text-white">Sort By: </div>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center" style="width: max-content;"
                 id="sortLatest">Latest</button>
             <button type="button" class="btn btn-dark rounded-pill px-3 text-center" style="width: max-content;"
@@ -125,7 +130,13 @@
                             <p class="card-title text-truncate">{{ $m->title }}</p>
                             <div class="d-flex justify-content-between center">
                                 <p>{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
-                                <i class="fa-solid fa-check text-danger"></i>
+                                @if ($m->watchlist)
+                                <i class="fa-solid fa-check text-success"></i>
+                                @else
+                                <a href="{{ route('member.watchlist.add', $m->id) }}">
+                                    <i class="fa-solid fa-plus text-danger"></i>
+                                </a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -149,6 +160,21 @@
 @endsection
 @push('js')
 <script>
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    });
+
+    @if(session('error'))
+        Toast.fire({
+        icon: 'error',
+        title: '{!! session('error') !!}'
+        });
+    @endif
+
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
@@ -175,7 +201,7 @@
             }
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
-                newRowAdd = '<div class="swiper-slide" id="movie">'+
+                newRowAdd = '<div class="swiper-slide" id="movie" style="width: max-content;">'+
                     '<div class="card bg-transparent">'+
                         '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
                         '<div class="card-body">'+

@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Movie extends Model
+class Watchlist extends Model
 {
     use HasFactory;
     protected $guarded = [];
 
-    public function watchlist(){
-        return $this->hasOne(Watchlist::class);
+    public function movie(){
+        return $this->belongsTo(Movie::class);
     }
 }

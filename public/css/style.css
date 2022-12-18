@@ -1,7 +1,3 @@
-* {
-  color: white;
-}
-
 input {
   color: white !important;
 }
@@ -17,7 +13,16 @@ select {
 tr>td {
   width: 150px;
   background-color: #212529;
-  padding: 5px
+  padding: 5px;
+  color:  white;
+}
+
+tr>th {
+  color: white;
+}
+
+h1,h2,h3,h4,h5,p,span,label{
+  color: white;
 }
 
 #content {

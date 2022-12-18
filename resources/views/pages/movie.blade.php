@@ -11,17 +11,19 @@
             </div>
             @endif
         </div>
-        <div class="row col-12 justify-content-center mt-3">
+        <div class="row col-12 justify-content-center my-3">
             @foreach ($movies as $m)
-            <div class="card bg-transparent col-lg-2 col-md-4 col-6">
-                <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
-                    <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top" alt="{{ $m->title }}"
-                        style="aspect-ratio: 3/4; background-size: contain;">
-                    <div class="card-body">
-                        <p class="card-title text-truncate">{{ $m->title }}</p>
-                        <p class="card-text">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
-                    </div>
-                </a>
+            <div class="col-lg-2 col-md-4 col-6 my-3">
+                <div class="card bg-dark border-0 p-2">
+                    <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
+                        <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
+                            alt="{{ $m->title }}" style="aspect-ratio: 3/4; background-size: contain;">
+                        <div class="card-body">
+                            <p class="card-title text-truncate">{{ $m->title }}</p>
+                            <p class="card-text">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                        </div>
+                    </a>
+                </div>
             </div>
             @endforeach
         </div>
