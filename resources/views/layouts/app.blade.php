@@ -25,7 +25,7 @@
 
     @include('layouts.ext-js')
     <script>
-        document.getElementById('logout').addEventListener('click', (e) => {
+        $('#logout').click(function (){
             Swal.fire({
                 title: 'Are you sure you want to logout ?',
                 icon: 'question',
