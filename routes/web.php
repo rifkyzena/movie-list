@@ -27,6 +27,11 @@ Auth::routes();
 Route::get('/home', [GuestController::class, 'home'])->name('home');
 Route::get('/actor/{id}', [GuestController::class, 'actorDetail'])->name('actor.detail');
 Route::get('/actor', [GuestController::class, 'actor'])->name('actor');
+Route::post('/movie/sort/category', [GuestController::class, 'movieSortCategory'])->name('movie.sort.category');
+Route::get('/movie/sort/desc', [GuestController::class, 'movieSortDesc'])->name('movie.sort.desc');
+Route::get('/movie/sort/asc', [GuestController::class, 'movieSortAsc'])->name('movie.sort.asc');
+Route::get('/movie/sort/latest', [GuestController::class, 'movieSortLatest'])->name('movie.sort.latest');
+Route::post('/movie/search', [GuestController::class, 'movieSearch'])->name('movie.search');
 Route::get('/movie/{id}', [GuestController::class, 'movieDetail'])->name('movie.detail');
 Route::get('/movie', [GuestController::class, 'movie'])->name('movie');
 

@@ -6,7 +6,7 @@
             <h5 class="text-danger">Actors</h5>
             @if (Auth::user() && Auth::user()->role == 'admin')
             <div>
-                <input type="search" class="p-1 rounded bg-dark me-3" placeholder="Search Movie">
+                <input type="search" class="p-1 rounded bg-dark me-3" placeholder="Search Actor">
                 <a href="{{ route('admin.actor.create') }}" class="btn btn-sm btn-danger">Add Actor</a>
             </div>
             @endif

@@ -32,7 +32,7 @@
                     </p>
                     <h3>{{ $s->title }}</h3>
                     <p>{{$s->description}}</p>
-                    @if (Auth::user() && Auth::user()->role == 'user')
+                    @if ($user && $user->role == 'user')
                     <button type="button" class="btn btn-danger flex-shrink-0 w-50">
                         <i class="fa-solid fa-plus"></i>
                         Add to Watchlists
@@ -54,7 +54,7 @@
                 <!-- Movie Item -->
                 @foreach ($movie_populars as $m)
                 <div class="swiper-slide">
-                    <div class="card bg-transparent" style="width: 250px;">
+                    <div class="card bg-transparent">
                         <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
                             <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
                                 alt="{{ $m->title }}" style="aspect-ratio: 3/4; background-size: contain;">
@@ -84,59 +84,27 @@
     <section class="container my-4" id="show">
         <div class="d-flex justify-content-between mt-3">
             <h5><i class="fa-solid fa-film"></i> Show</h5>
-            <input type="search" class="p-1 rounded bg-dark" placeholder="Search Movie">
+            <input type="search" class="p-1 rounded bg-dark" placeholder="Search Movie" id="search">
         </div>
         <hr>
         <!-- TagList -->
         <div class="taglist d-flex flex-wrap justify-content-center mb-3 gap-3 overflow-auto">
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Action</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Adventure</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Animated</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Biography</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Comedy</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Crime</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Disaster</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Drama</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Family</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Fantasy</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">History</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Horror</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Mystery</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Musical</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Romance</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Sci-Fi</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Sport</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Thriller</button>
+            @foreach ($genres as $g)
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center" style="width: max-content;"
+                onclick="sort(this);" value="{{$g['name']}}">{{$g['name']}}</button>
+            @endforeach
         </div>
         <div class="d-flex align-items-center mb-3 gap-2">
             <div class="mr-4">Sort By: </div>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Latest</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">A-Z</button>
-            <button type="button" class="btn btn-dark rounded-pill px-3 text-center"
-                style="width: max-content;">Z-A</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center" style="width: max-content;"
+                id="sortLatest">Latest</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center" style="width: max-content;"
+                id="sortAsc">A-Z</button>
+            <button type="button" class="btn btn-dark rounded-pill px-3 text-center" style="width: max-content;"
+                id="sortDesc">Z-A</button>
         </div>
         <!-- END -->
-        @if (Auth::user() && Auth::user()->role == 'admin')
+        @if ($user && $user->role == 'admin')
         <div class="d-flex justify-content-end mt-2 mb-4">
             <a href="{{ route('admin.movie.create') }}" class="btn btn-sm btn-danger position-relative">
                 <i class="fa-solid fa-plus"></i>
@@ -146,25 +114,24 @@
         @endif
         <div class="swiper">
             <!-- Movie wrapper -->
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" id="movie-show">
                 <!-- Movie Item -->
                 @foreach ($movies as $m)
-                <div class="swiper-slide">
-                    <div class="card bg-transparent" style="width: 250px;">
+                <div class="swiper-slide" id="movie">
+                    <div class="card bg-transparent">
                         <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
                             alt="{{ $m->title }}">
                         <div class="card-body">
                             <p class="card-title text-truncate">{{ $m->title }}</p>
                             <div class="d-flex justify-content-between center">
-                                <p class="">{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
-                                @if (Auth::user() && Auth::user()->role == 'user')
+                                <p>{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
                                 <i class="fa-solid fa-check text-danger"></i>
-                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
                 @endforeach
+                <div class="row" id="row-movie"></div>
             </div>
             <!-- If we need pagination -->
             <div class="swiper-pagination"></div>
@@ -180,3 +147,167 @@
     <!-- END -->
 </main>
 @endsection
+@push('js')
+<script>
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    let movies = {!! json_encode($movies) !!};
+
+    function sort(ele){
+        $.ajax({
+        type:'POST',
+        url:"{{ route('movie.sort.category') }}",
+        data:{param:ele.value},
+        success:function(data){
+            $('div#movie').remove()
+            let count = data.length
+            if(count == 0){
+                newRowAdd = '<div class="row ms-3" id="movie">'+
+                    '<div class="col-12 text-center">'+
+                        '<h4>No Data Movie Found</h4>'+
+                    '</div>'+
+                '</div>';
+                $('#movie-show').append(newRowAdd);
+            }
+            for(i=0; i<count;i++){
+                let date = new Date(data[i].release_date);
+                newRowAdd = '<div class="swiper-slide" id="movie">'+
+                    '<div class="card bg-transparent">'+
+                        '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
+                        '<div class="card-body">'+
+                            '<p class="card-title text-truncate">'+data[i].title+'</p>'+
+                            '<div class="d-flex justify-content-between center">'+
+                                '<p>'+date.getFullYear()+'</p>'+
+                                '<i class="fa-solid fa-check text-danger"></i>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+                $('#movie-show').append(newRowAdd);
+            }
+        }
+        });
+    }
+
+    $("#search").keyup(function(e) {
+        if (event.keyCode === 13) {
+            let param = $('#search').val();
+            $.ajax({
+                type:'POST',
+            url:"{{ route('movie.search') }}",
+            data:{param:param},
+            success:function(data){
+                $('div#movie').remove()
+                let count = data.length
+                if(count == 0){
+                    newRowAdd = '<div class="row ms-3" id="movie">'+
+                        '<div class="col-12 text-center">'+
+                            '<h4>No Data Movie Found</h4>'+
+                        '</div>'+
+                    '</div>';
+                    $('#movie-show').append(newRowAdd);
+                }
+                for(i=0; i<count;i++){
+                    let date = new Date(data[i].release_date);
+                    newRowAdd = '<div class="swiper-slide" id="movie">'+
+                        '<div class="card bg-transparent">'+
+                            '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
+                            '<div class="card-body">'+
+                                '<p class="card-title text-truncate">'+data[i].title+'</p>'+
+                                '<div class="d-flex justify-content-between center">'+
+                                    '<p>'+date.getFullYear()+'</p>'+
+                                    '<i class="fa-solid fa-check text-danger"></i>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>';
+                    $('#movie-show').append(newRowAdd);
+                }
+            }
+            });
+        }
+    })
+    $('#sortLatest').click(function(){
+        $.ajax({
+        type:'GET',
+        url:"{{ route('movie.sort.latest') }}",
+        success:function(data){
+            $('div#movie').remove()
+            let count = data.length
+            for(i=0; i<count;i++){
+                let date = new Date(data[i].release_date);
+                newRowAdd = '<div class="swiper-slide" id="movie">'+
+                    '<div class="card bg-transparent">'+
+                        '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
+                        '<div class="card-body">'+
+                            '<p class="card-title text-truncate">'+data[i].title+'</p>'+
+                            '<div class="d-flex justify-content-between center">'+
+                                '<p>'+date.getFullYear()+'</p>'+
+                                '<i class="fa-solid fa-check text-danger"></i>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+                $('#movie-show').append(newRowAdd);
+            }
+        }
+        });
+    })
+    $('#sortAsc').click(function(){
+        $.ajax({
+        type:'GET',
+        url:"{{ route('movie.sort.asc') }}",
+        success:function(data){
+            $('div#movie').remove()
+            let count = data.length
+            for(i=0; i<count;i++){
+                let date = new Date(data[i].release_date);
+                newRowAdd = '<div class="swiper-slide" id="movie">'+
+                    '<div class="card bg-transparent">'+
+                        '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
+                        '<div class="card-body">'+
+                            '<p class="card-title text-truncate">'+data[i].title+'</p>'+
+                            '<div class="d-flex justify-content-between center">'+
+                                '<p>'+date.getFullYear()+'</p>'+
+                                '<i class="fa-solid fa-check text-danger"></i>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+                $('#movie-show').append(newRowAdd);
+            }
+        }
+        });
+    })
+    $('#sortDesc').click(function(){
+        $.ajax({
+        type:'GET',
+        url:"{{ route('movie.sort.desc') }}",
+        success:function(data){
+            $('div#movie').remove()
+            let count = data.length
+            for(i=0; i<count;i++){
+                let date = new Date(data[i].release_date);
+                newRowAdd = '<div class="swiper-slide" id="movie">'+
+                    '<div class="card bg-transparent">'+
+                        '<img src="{{ asset("storage") }}/'+data[i].image_thumbnail+'" class="card-img-top" alt="'+data[i].title+'">'+
+                        '<div class="card-body">'+
+                            '<p class="card-title text-truncate">'+data[i].title+'</p>'+
+                            '<div class="d-flex justify-content-between center">'+
+                                '<p>'+date.getFullYear()+'</p>'+
+                                '<i class="fa-solid fa-check text-danger"></i>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+                $('#movie-show').append(newRowAdd);
+            }
+        }
+        });
+    })
+</script>
+@endpush
