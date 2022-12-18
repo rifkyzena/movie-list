@@ -25,6 +25,7 @@ Route::get('/unauthorized', function () {
 Auth::routes();
 
 Route::get('/home', [GuestController::class, 'home'])->name('home');
+Route::post('/actor/search', [GuestController::class, 'actorSearch'])->name('actor.search');
 Route::get('/actor/{id}', [GuestController::class, 'actorDetail'])->name('actor.detail');
 Route::get('/actor', [GuestController::class, 'actor'])->name('actor');
 Route::post('/movie/sort/category', [GuestController::class, 'movieSortCategory'])->name('movie.sort.category');

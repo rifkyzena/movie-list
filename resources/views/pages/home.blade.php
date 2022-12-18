@@ -57,14 +57,14 @@
                 <!-- Movie Item -->
                 @foreach ($movie_populars as $m)
                 <div class="swiper-slide">
-                    <a href="{{ route('movie.detail', $m->id) }}" class="text-decoration-none">
+                    <a href="{{ route('movie.detail', $m['id']) }}" class="text-decoration-none">
                         <div class="card bg-transparent">
-                            <img src="{{ asset('storage/'. $m->image_thumbnail) }}" class="card-img-top"
-                                alt="{{ $m->title }}">
+                            <img src="{{ asset('storage/'. $m['image_thumbnail']) }}" class="card-img-top"
+                                alt="{{ $m['title'] }}">
                             <div class="card-body">
-                                <p class="card-title text-truncate">{{ $m->title }}</p>
+                                <p class="card-title text-truncate">{{ $m['title'] }}</p>
                                 <div class="d-flex justify-content-between center">
-                                    <p>{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
+                                    <p>{{ \Carbon\Carbon::parse($m['release_date'])->format('Y') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                             <div class="d-flex justify-content-between center">
                                 <p>{{ \Carbon\Carbon::parse($m->release_date)->format('Y') }}</p>
                                 @if ($user && $user->role == 'user')
-                                @if ($m->watchlist)
+                                @if (count($m->watchlists()->get()) > 0)
                                 <i class="fa-solid fa-check text-success"></i>
                                 @else
                                 <a href="{{ route('member.watchlist.add', $m->id) }}">
@@ -162,7 +162,7 @@
 @endsection
 @push('js')
 <script>
-    var Toast = Swal.mixin({
+    let Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
@@ -183,8 +183,6 @@
         }
     });
     
-    let movies = {!! json_encode($movies) !!};
-
     function sort(ele){
         $.ajax({
         type:'POST',
@@ -204,12 +202,12 @@
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
                 let icon = ''
-                if(data[i].watchlist != null){
+                if(data[i].watchlists.length > 0){
                     icon = '<i class="fa-solid fa-check text-success"></i>';
                 }else{
-                    var url = '{{ route("member.watchlist.add", ":id") }}';
+                    let url = '{{ route("member.watchlist.add", ":id") }}';
                     url = url.replace(':id', data[i].id);
-                    icon = '<a href="'+url+'">'+
+                    icon = '<a href="'+url+'" class="text-decoration-none">'+
                                     '<i class="fa-solid fa-plus text-danger"></i>'+
                                 '</a>';
                 }
@@ -254,12 +252,12 @@
                 for(i=0; i<count;i++){
                     let date = new Date(data[i].release_date);
                     let icon = ''
-                    if(data[i].watchlist != null){
+                    if(data[i].watchlists.length > 0){
                         icon = '<i class="fa-solid fa-check text-success"></i>';
                     }else{
-                        var url = '{{ route("member.watchlist.add", ":id") }}';
+                        let url = '{{ route("member.watchlist.add", ":id") }}';
                         url = url.replace(':id', data[i].id);
-                        icon = '<a href="'+url+'">'+
+                        icon = '<a href="'+url+'" class="text-decoration-none">'+
                                         '<i class="fa-solid fa-plus text-danger"></i>'+
                                     '</a>';
                     }
@@ -293,12 +291,12 @@
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
                 let icon = ''
-                if(data[i].watchlist != null){
+                if(data[i].watchlists.length > 0){
                     icon = '<i class="fa-solid fa-check text-success"></i>';
                 }else{
-                    var url = '{{ route("member.watchlist.add", ":id") }}';
+                    let url = '{{ route("member.watchlist.add", ":id") }}';
                     url = url.replace(':id', data[i].id);
-                    icon = '<a href="'+url+'">'+
+                    icon = '<a href="'+url+'" class="text-decoration-none">'+
                                     '<i class="fa-solid fa-plus text-danger"></i>'+
                                 '</a>';
                 }
@@ -331,12 +329,12 @@
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
                 let icon = ''
-                if(data[i].watchlist != null){
+                if(data[i].watchlists.length > 0){
                     icon = '<i class="fa-solid fa-check text-success"></i>';
                 }else{
-                    var url = '{{ route("member.watchlist.add", ":id") }}';
+                    let url = '{{ route("member.watchlist.add", ":id") }}';
                     url = url.replace(':id', data[i].id);
-                    icon = '<a href="'+url+'">'+
+                    icon = '<a href="'+url+'" class="text-decoration-none">'+
                                     '<i class="fa-solid fa-plus text-danger"></i>'+
                                 '</a>';
                 }
@@ -369,12 +367,12 @@
             for(i=0; i<count;i++){
                 let date = new Date(data[i].release_date);
                 let icon = ''
-                if(data[i].watchlist != null){
+                if(data[i].watchlists.length > 0){
                     icon = '<i class="fa-solid fa-check text-success"></i>';
                 }else{
-                    var url = '{{ route("member.watchlist.add", ":id") }}';
+                    let url = '{{ route("member.watchlist.add", ":id") }}';
                     url = url.replace(':id', data[i].id);
-                    icon = '<a href="'+url+'">'+
+                    icon = '<a href="'+url+'" class="text-decoration-none">'+
                                     '<i class="fa-solid fa-plus text-danger"></i>'+
                                 '</a>';
                 }

@@ -10,7 +10,7 @@ class Movie extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function watchlist(){
-        return $this->hasOne(Watchlist::class);
+    public function watchlists(){
+        return $this->hasMany(Watchlist::class);
     }
 }

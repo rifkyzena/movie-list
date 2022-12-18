@@ -8,10 +8,10 @@
                     style="max-width: 400px;">
                 @if (Auth::user() && Auth::user()->role == 'admin')
                 <div class="action fs-4">
-                    <a href="{{ route('admin.actor.edit', $actor->id) }}" class="btn btn-warning btn-sm">
+                    <a href="{{ route('admin.actor.edit', $actor->id) }}" class="btn text-danger fs-4">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <button class="btn btn-danger btn-sm" id="delete" value="{{ $actor->id }}">
+                    <button class="btn text-danger fs-4" id="delete" value="{{ $actor->id }}">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </div>

@@ -20,7 +20,6 @@
 
     @yield('content')
 
-
     @include('layouts.footer')
 
     @include('layouts.ext-js')

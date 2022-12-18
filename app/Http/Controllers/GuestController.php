@@ -12,7 +12,17 @@ class GuestController extends Controller
     public function home()
     {
         $movies = Movie::all();
-        $movie_populars = Movie::take(8)->get();
+        $unsorted_movie = collect([]);
+        foreach ($movies as $m) {
+            $unsorted_movie->push([
+                'id' => $m->id,
+                'title' => $m->title,
+                'image_thumbnail' => $m->image_thumbnail,
+                'release_date' => $m->release_date,
+                'popular' => $m->watchlists()->count()
+            ]);
+        }
+        $movie_populars = $unsorted_movie->sortByDesc('popular')->take(6);
         $slider = Movie::inRandomOrder()->limit(3)->get();
         $user = Auth::user();
         $genres = [
@@ -51,6 +61,11 @@ class GuestController extends Controller
         return view('pages.detail-actor', compact('actor', 'movies'));
     }
 
+    public function actorSearch(Request $request){
+        $model = Actor::where('name','LIKE','%'.$request->param.'%')->get();
+        return response()->json($model);
+    }
+
     public function movie()
     {
         $movies = Movie::all();
@@ -67,22 +82,22 @@ class GuestController extends Controller
     }
 
     public function movieSearch(Request $request){
-        $model = Movie::with('watchlist')->where('title','LIKE','%'.$request->param.'%')->get();
+        $model = Movie::with('watchlists')->where('title','LIKE','%'.$request->param.'%')->get();
         return response()->json($model);
     }
 
     public function movieSortLatest(){
-        $model = Movie::with('watchlist')->orderBy('id', 'DESC')->get();
+        $model = Movie::with('watchlists')->orderBy('id', 'DESC')->get();
         return response()->json($model);
     }
 
     public function movieSortAsc(){
-        $model = Movie::with('watchlist')->orderBy('title', 'ASC')->get();
+        $model = Movie::with('watchlists')->orderBy('title', 'ASC')->get();
         return response()->json($model);
     }
 
     public function movieSortDesc(){
-        $model = Movie::with('watchlist')->orderBy('title', 'DESC')->get();
+        $model = Movie::with('watchlists')->orderBy('title', 'DESC')->get();
         return response()->json($model);
     }
 
@@ -97,7 +112,7 @@ class GuestController extends Controller
                         'title' => $m->title,
                         'release_date' => $m->release_date,
                         'image_thumbnail' => $m->image_thumbnail,
-                        'watchlist' => $m->watchlist
+                        'watchlists' => $m->watchlists()->get()
                     ]);
                 }
             }

@@ -101,7 +101,7 @@
                 @enderror
             </div>
             <button type="submit" class="btn btn-danger w-100 mt-3 py-2">
-                Create
+                Edit
             </button>
         </form>
     </div>

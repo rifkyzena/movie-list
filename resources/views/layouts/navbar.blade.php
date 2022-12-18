@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 sticky-top">
     <div class="container d-flex align-items-center">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
             <h3><span class="text-danger fw-bolder">Movie</span>List</h3>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
