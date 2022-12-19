@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('phone')->nullable();
             $table->text('image_url')->nullable();
-            $table->enum('role', ['admin', 'user']);
+            $table->enum('role', ['admin', 'user'])->default('user');
             $table->timestamp('date_joined')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->rememberToken();
             $table->timestamps();
