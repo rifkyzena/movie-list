@@ -39,4 +39,12 @@ class MemberController extends Controller
         }
         return response()->json($model);
     }
+
+    public function watchlistSearch(Request $request){
+        $param = $request->param;
+        $model = Watchlist::with('movie')->whereHas('movie', function ($query) use($param) {
+            return $query->where('title', 'like', '%'.$param.'%');
+        })->paginate(5);
+        return response()->json($model);
+    }
 }

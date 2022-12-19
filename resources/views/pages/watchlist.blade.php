@@ -19,9 +19,9 @@
         </div>
         <div class="input-group mb-4">
             <input type="text" class="form-control bg-dark border-0" placeholder="Search" aria-label="search"
-                aria-describedby="button-addon2" id="search">
-            <button class="btn btn-dark" type="button" id="button-addon2" id="buttonSearch">
-                <i class="fa-solid fa-magnifying-glass"></i>
+                aria-describedby="buttonSearch" id="search">
+            <button class="btn btn-dark" type="button" id="buttonSearch">
+                <i class=" fa-solid fa-magnifying-glass"></i>
             </button>
         </div>
         <div class="d-flex align-items-center gap-2 col-2">
@@ -160,7 +160,43 @@
                             '</div>';
                 $('#pagination-show').append(newRowPag);
             }
-            });
+        });
+    })
+
+    $('#buttonSearch').click(function(){
+        let param = $('#search').val();
+        $.ajax({
+            type:'POST',
+            url:"{{ route('member.watchlist.search') }}",
+            data:{param:param},
+            success:function(data){
+                $('tr#watchlist').remove()
+                let count = data.data.length
+                if(count == 0){
+                    newRowAdd = '<tr id="watchlist"><td colspan="4" class="text-center">No Data Watchlist Found</td></tr>';
+                    $('#watchlist-show').append(newRowAdd);
+                }
+                for(i=0; i<count;i++){
+                    newRowAdd = '<tr class="align-middle text-center" id="watchlist">'+
+                            '<td>'+
+                                '<img src="{{ asset("storage") }}/'+data.data[i].movie.image_thumbnail+'" alt="'+data.data[i].movie.title+'" style="max-width: 100px;">'+
+                            '</td>'+
+                            '<td>'+data.data[i].movie.title+'</td>'+
+                            '<td class="text-success">'+data.data[i].status+'</td>'+
+                            '<td class="text-center">'+
+                                '<button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal" data-bs-target="#profileModal">'+
+                                    '<i class="fa-solid fa-ellipsis"></i>'+
+                                '</button>'+
+                            '</td>'+
+                        '</tr>';
+                    $('#watchlist-show').append(newRowAdd);
+                }
+                newRowPag = '<div class="d-flex justify-content-center mt-2" id="pagination">'+
+                                '{{'+data.links+'}}'+
+                            '</div>';
+                $('#pagination-show').append(newRowPag);
+            }
+        });
     })
 </script>
 @endpush
