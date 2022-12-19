@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -33,6 +35,30 @@ class ProfileController extends Controller
             return redirect()->route('profile.index')->with(['success' => 'Profile Updated Successfully']);
         } else {
             return redirect()->back()->withInput()->with(['error' => 'Some problem occurred, please try again']);
+        }
+    }
+
+    public function image(Request $request){
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'image_url' => 'required',
+            ]
+        );
+        if ($validator->fails()) {
+            return response()->json(['status' => 0, 'error' => $validator->errors()->toArray()]);
+        } else {
+            $user = User::find($request->id);
+            if($user->image_url != null){
+                Storage::delete($user->image_url);
+                $image_url = $request->file('image_url')->store('users');
+            }else{
+                $image_url = $request->file('image_url')->store('users');
+            }
+            $user->update([
+                'image_url' => $image_url
+            ]);
+            return response()->json(['status' => 1, 'success' => 'Profile Updated Successfully']);
         }
     }
 }

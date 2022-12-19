@@ -5,13 +5,15 @@
         <div class="col-lg-3 d-flex flex-column align-items-center">
             <h3>My <span class="text-danger"> Profile</span></h3>
             @if ($user->image_url)
-            <img src="{{ asset('storage/'.$user->image_url) }}" alt="" class="img-thumbnail rounded-circle"
-                data-bs-toggle="modal" data-bs-target="#profileModal"
-                style="width: 100px; height: 100px; object-fit: cover;">
+            <button class="bg-transparent border-0" type="button" id="editImage" value="{{ $user->id }}">
+                <img src="{{ asset('storage/'.$user->image_url) }}" alt="" class="img-thumbnail rounded-circle"
+                    style="width: 100px; height: 100px; object-fit: cover;">
+            </button>
             @else
-            <img src="{{ asset('img/default-user.png') }}" alt="" class="img-thumbnail rounded-circle"
-                data-bs-toggle="modal" data-bs-target="#profileModal"
-                style="width: 100px; height: 100px; object-fit: cover;">
+            <button class="bg-transparent border-0" type="button" id="editImage" value="{{ $user->id }}">
+                <img src="{{ asset('img/default-user.png') }}" alt="" class="img-thumbnail rounded-circle"
+                    style="width: 100px; height: 100px; object-fit: cover;">
+            </button>
             @endif
             <div class="text-center">
                 <p class="fw-bold">{{ $user->username }}</p>
@@ -88,7 +90,7 @@
     </div>
 </main>
 <!-- Modal -->
-<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content bg-dark">
             <div class="modal-header">
@@ -96,13 +98,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-3">
-                    <input class="form-control bg-dark border-0" type="file" id="formFile">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger">Save changes</button>
+                <form action="{{ route('profile.image') }}" id="main_form" class="form-horizontal" method="POST"
+                    enctype="multipart/form-data">
+                    @method('PUT')
+                    <input type="hidden" name="id" id="id">
+                    <div class="mb-3">
+                        <input class="form-control bg-dark border-0" type="file" id="image_url" name="image_url">
+                        <span class="text-danger error_text image_url_error"></span>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger mx-1">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -110,6 +118,12 @@
 @endsection
 @push('js')
 <script>
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     var Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -117,11 +131,51 @@
         timer: 3000,
         timerProgressBar: true,
     });
+    
     @if(session('success'))
         Toast.fire({
         icon: 'success',
         title: '{!! session('success') !!}'
         });
     @endif
+
+    $('body').on('click', '#editImage', function() {
+        let id = $(this).val();
+        $('#modal').modal('show');
+        $('#id').val(id);
+    });
+
+    $('#main_form').on('submit', function(e){
+        e.preventDefault();
+
+        $.ajax({
+            url:$(this).attr('action'),
+            method:$(this).attr('method'),
+            data:new FormData(this),
+            processData:false,
+            dataType:'json',
+            contentType:false,
+            beforeSend:function(){
+                $(document).find('span.error_text').text('')
+            },
+            success:function(data){
+                if(data.status == 0){
+                    $.each(data.error, function(prefix, val){
+                        $('span.'+prefix+'_error').text(val[0]);
+                    });
+                }else{
+                    $('#main_form').trigger("reset");;
+                    $('#modal').modal('hide');
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.success
+                    });
+                    setInterval(() => {
+                        location.reload()
+                    }, 3000);
+                }
+            }
+        })
+    })
 </script>
 @endpush

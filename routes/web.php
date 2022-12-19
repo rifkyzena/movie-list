@@ -37,6 +37,7 @@ Route::get('/movie/{id}', [GuestController::class, 'movieDetail'])->name('movie.
 Route::get('/movie', [GuestController::class, 'movie'])->name('movie');
 
 Route::middleware('auth')->group(function () {
+    Route::put('profile/image', [ProfileController::class, 'image'])->name('profile.image');
     Route::put('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::group(['middleware' => 'role:user'], function () {

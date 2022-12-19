@@ -210,7 +210,7 @@ class AdminController extends Controller
             if ($request->image_url_old) {
                 Storage::delete($request->image_url_old);
             }
-            $image_url = $request->file('image_url')->store('movies/image_urls');
+            $image_url = $request->file('image_url')->store('actors');
         } else {
             $image_url = $request->image_url_old;
         }

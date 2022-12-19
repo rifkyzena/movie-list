@@ -59,7 +59,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr>
+                <tr id="watchlist">
                     <td colspan="4" class="text-center">No Data Watchlist Found</td>
                 </tr>
                 @endforelse
@@ -132,7 +132,6 @@
 
     $('#filter').on('change', function(){
         let param = $(this).val();
-        console.log(param);
         $('#pagination-show').remove();
         $.ajax({
             type:'POST',
