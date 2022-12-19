@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::put('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::group(['middleware' => 'role:user'], function () {
+        Route::put('watchlist/update', [MemberController::class, 'watchlistUpdate'])->name('member.watchlist.update');
         Route::post('watchlist/search', [MemberController::class, 'watchlistSearch'])->name('member.watchlist.search');
         Route::post('watchlist/filter', [MemberController::class, 'watchlistFilter'])->name('member.watchlist.filter');
         Route::get('watchlist/movie/{id}', [MemberController::class, 'watchlistAdd'])->name('member.watchlist.add');

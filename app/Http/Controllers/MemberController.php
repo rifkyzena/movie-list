@@ -47,4 +47,19 @@ class MemberController extends Controller
         })->paginate(5);
         return response()->json($model);
     }
+
+    public function watchlistUpdate(Request $request){
+        $watchlist = Watchlist::find($request->id);
+        if($request->status == 'Remove'){
+            $watchlist->delete();
+        }
+        $watchlist->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json([
+            'status' => 1,
+            'success' => 'Status Updated Successfully'
+        ]);
+    }
 }

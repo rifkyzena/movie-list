@@ -52,8 +52,8 @@
                     <td>{{ $w->movie->title }}</td>
                     <td class="text-success">{{ $w->status }}</td>
                     <td class="text-center">
-                        <button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal"
-                            data-bs-target="#profileModal">
+                        <button type="button" class="btn bg-transparent text-white" id="editStatus"
+                            value="{{ $w->id }}">
                             <i class="fa-solid fa-ellipsis"></i>
                         </button>
                     </td>
@@ -74,7 +74,7 @@
 </main>
 
 <!-- Modal -->
-<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content bg-dark">
             <div class="modal-header">
@@ -82,20 +82,25 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-3">
-                    <select class="form-select bg-black border-0">
-                        <option value="">Select Status</option>
-                        <option value="All">All</option>
-                        <option value="Planned">Planned</option>
-                        <option value="Planned">Planned</option>
-                        <option value="Watching">Watching</option>
-                        <option value="Finished">Finished</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger">Save changes</button>
+                <form action="{{ route('member.watchlist.update') }}" id="main_form" class="form-horizontal"
+                    method="POST">
+                    @method('PUT')
+                    <input type="hidden" name="id" id="id">
+                    <div class="mb-3">
+                        <select class="form-select bg-black border-0" name="status">
+                            <option value="">Select Status</option>
+                            <option value="Planned">Planned</option>
+                            <option value="Watching">Watching</option>
+                            <option value="Finished">Finished</option>
+                            <option value="Remove">Remove</option>
+                        </select>
+                        <span class="text-danger error_text status_error"></span>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger mx-1">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -148,7 +153,7 @@
                             '<td>'+data.data[i].movie.title+'</td>'+
                             '<td class="text-success">'+data.data[i].status+'</td>'+
                             '<td class="text-center">'+
-                                '<button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal" data-bs-target="#profileModal">'+
+                                '<button type="button" class="btn bg-transparent text-white" id="editStatus" value="'+data.data[i].id+'">'+
                                     '<i class="fa-solid fa-ellipsis"></i>'+
                                 '</button>'+
                             '</td>'+
@@ -184,7 +189,7 @@
                             '<td>'+data.data[i].movie.title+'</td>'+
                             '<td class="text-success">'+data.data[i].status+'</td>'+
                             '<td class="text-center">'+
-                                '<button type="button" class="btn bg-transparent text-white" data-bs-toggle="modal" data-bs-target="#profileModal">'+
+                                '<button type="button" class="btn bg-transparent text-white" id="editStatus" value="'+data.data[i].id+'">'+
                                     '<i class="fa-solid fa-ellipsis"></i>'+
                                 '</button>'+
                             '</td>'+
@@ -197,6 +202,45 @@
                 $('#pagination-show').append(newRowPag);
             }
         });
+    })
+
+    $('body').on('click', '#editStatus', function() {
+        let id = $(this).val();
+        $('#modal').modal('show');
+        $('#id').val(id);
+    });
+
+    $('#main_form').on('submit', function(e){
+        e.preventDefault();
+
+        $.ajax({
+            url:$(this).attr('action'),
+            method:$(this).attr('method'),
+            data:new FormData(this),
+            processData:false,
+            dataType:'json',
+            contentType:false,
+            beforeSend:function(){
+                $(document).find('span.error_text').text('')
+            },
+            success:function(data){
+                if(data.status == 0){
+                    $.each(data.error, function(prefix, val){
+                        $('span.'+prefix+'_error').text(val[0]);
+                    });
+                }else{
+                    $('#main_form').trigger("reset");;
+                    $('#modal').modal('hide');
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.success
+                    });
+                    setInterval(() => {
+                        location.reload()
+                    }, 3000);
+                }
+            }
+        })
     })
 </script>
 @endpush
