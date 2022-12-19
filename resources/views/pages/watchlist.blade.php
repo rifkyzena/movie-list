@@ -169,6 +169,7 @@
 
     $('#buttonSearch').click(function(){
         let param = $('#search').val();
+        $('#pagination-show').remove();
         $.ajax({
             type:'POST',
             url:"{{ route('member.watchlist.search') }}",
