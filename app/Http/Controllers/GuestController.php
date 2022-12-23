@@ -77,7 +77,6 @@ class GuestController extends Controller
         $movie = Movie::find($id);
         $more = Movie::take(6)->get();
         $actors = Actor::all();
-        $actor_names = Actor::pluck('name');
         return view('pages.detail-movie', compact('movie', 'more', 'actors'));
     }
 
