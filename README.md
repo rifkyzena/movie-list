@@ -13,6 +13,8 @@ Movie List was built with Model View Controller (MVC) architecture.
     - *php artisan serve*
 5. Open the link given after the last command to open the web application.
 
+## To login as admin, check the credentials on AccountSeeder file.php
+
 Below is the preview and/or flow of the application:
 
 # (1/13) Login
